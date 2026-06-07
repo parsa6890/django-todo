@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Todo List</title>
+</head>
+<body>
+
+	<h2>pending tasks</h2>
+	<ul>
+		{% for task in pending_list %}
+			<li>{{ task.title }} - {{ task.status }}</li>
+		{% empty %}
+			<li>no pending task</li>
+		{% endfor %}
+	</ul>
+	<hr>
+	<ul>
+		{% for task in done_list %}
+			<li>{{ task.title }} - {{ task.status }}</li>
+		{% empty %}
+			<li>no done task</li>
+		{% endfor %}
+	</ul>
+
+</body>
+</html>
