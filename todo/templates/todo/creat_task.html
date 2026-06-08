@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Create Task</title>
+</head>
+<body>
+
+    <h1>Create New Todo</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Save Task</button>
+    <a href="{% url 'todos' %}">Todos List</a>
+    </form>
+</body>
+</html>

@@ -5,7 +5,6 @@
 	<title>Todo List</title>
 </head>
 <body>
-
 			<table border="1">
 				<tr>
 					<th>status</th>
@@ -22,6 +21,6 @@
 						{% endfor %}
 					{% endfor %}
 			</table>
-
+			<a href="{% url 'creat_task' %}">Add New Task</a>
 </body>
 </html>
