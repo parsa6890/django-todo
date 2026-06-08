@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import TodoList
 from .forms import TodoForm
 
@@ -29,4 +28,11 @@ def cform_view(request):
 		"form" : form
 	}
 	return render(request, 'todo/creat_task.html', context)
+
+
+def delete_task(request, id):
+	task = get_object_or_404(TodoList, id= id)
+	task.delete()
+	return redirect('todos')
+
 

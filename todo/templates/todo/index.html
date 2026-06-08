@@ -7,6 +7,7 @@
 <body>
 			<table border="1">
 				<tr>
+					<th>delete item</th>
 					<th>status</th>
 					<th>title</th>
 					<th>description</th>
@@ -14,6 +15,13 @@
 					{% for status, tasks in grouped_todos.items %}
 						{% for task in tasks %}
 							<tr>
+								<td>
+								  <a href="{% url 'delete_task' task.id %}"
+								     onclick="return confirm('Are you sure you want to delete this task?');"
+								     style="color: red;">
+								     delete task
+								  </a>
+								</td>
 								<td>{{ status }}</td>
 								<td>{{ task.title }}</td>
 								<td>{{ task.description }}</td>
