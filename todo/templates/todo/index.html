@@ -6,40 +6,22 @@
 </head>
 <body>
 
-	<h2>all tasks</h2>
-	<ul>
-		{% for task in all_list %}
-			<li>{{ task.title }} - {{ task.status }}</li>
-		{% empty %}
-			<li>no task here</li>
-		{% endfor %}
-	</ul>
-	<hr>
-	<h2>pending tasks</h2>
-	<ul>
-		{% for task in pending_list %}
-			<li>{{ task.title }} - {{ task.status }}</li>
-		{% empty %}
-			<li>no pending task</li>
-		{% endfor %}
-	</ul>
-	<hr>
-	<h2>inprogress tasks</h2>
-	<ul>
-		{% for task in inprogress_list %}
-			<li>{{ task.title }} -{{ task.status }}</li>
-		{% empty %}
-			<li>no in progress task</li>
-		{% endfor %}
-	</ul>
-	<hr>
-	<ul>
-		{% for task in done_list %}
-			<li>{{ task.title }} - {{ task.status }}</li>
-		{% empty %}
-			<li>no done task</li>
-		{% endfor %}
-	</ul>
+			<table border="1">
+				<tr>
+					<th>status</th>
+					<th>title</th>
+					<th>description</th>
+				</tr>
+					{% for status, tasks in grouped_todos.items %}
+						{% for task in tasks %}
+							<tr>
+								<td>{{ status }}</td>
+								<td>{{ task.title }}</td>
+								<td>{{ task.description }}</td>
+							</tr>
+						{% endfor %}
+					{% endfor %}
+			</table>
 
 </body>
 </html>
