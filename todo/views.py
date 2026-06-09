@@ -16,7 +16,7 @@ def todo_view(request):
 	return render(request, 'todo/index.html', context)
 
 
-def cform_view(request):
+def creat_task_view(request):
 	if request.method == "POST":
 		form = TodoForm(request.POST)
 		if form.is_valid():
@@ -30,9 +30,25 @@ def cform_view(request):
 	return render(request, 'todo/creat_task.html', context)
 
 
-def delete_task(request, id):
+def delete_task_view(request, id):
 	task = get_object_or_404(TodoList, id= id)
 	task.delete()
 	return redirect('todos')
 
+
+
+def edit_task_view(request, id):
+	task = get_object_or_404 (TodoList, id= id)
+	if request.method == "POST":
+		form = TodoForm(request.POST, instance=task)
+		if form.is_valid():
+			form.save()
+			return redirect('todos')
+	else:
+		form= TodoForm(instance=task)
+	context= {
+		"form": form
+	}
+
+	return render(request, 'todo/edit_task.html', context)
 
