@@ -2,23 +2,23 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Edit Task</title>
+    <title>ویرایش وظیفه</title>
 </head>
 <body>
 
-    <h2>Edit Task</h2>
+    <h2>ویرایش وظیفه</h2>
 
     <form method="POST">
         {% csrf_token %}
 
         {{ form.as_p }}
 
-        <button type="submit">Update Task</button>
+        <button type="submit">به روز رسانی</button>
     </form>
 
     <br>
 
-    <a href="{% url 'todos' %}">Back to list</a>
+    <a href="{% url 'todos' %}">لیست وظایف</a>
 
 </body>
-</html>
+</html>     

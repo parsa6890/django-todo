@@ -2,40 +2,57 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Todo List</title>
+	<title>لیست وظایف</title>
 </head>
 <body>
-			<table border="1">
-				<tr>
-					<th>edit item</th>
-					<th>delete item</th>
-					<th>status</th>
-					<th>title</th>
-					<th>description</th>
-				</tr>
-					{% for status, tasks in grouped_todos.items %}
-						{% for task in tasks %}
-							<tr>
-								<td>
-								  <a href="{% url 'edit_task' task.id %}"
-								     style="color: blue;">
-								     edit task
-								  </a>
-								</td>
-								<td>
-								  <a href="{% url 'delete_task' task.id %}"
-								     onclick="return confirm('Are you sure you want to delete this task?');"
-								     style="color: red;">
-								     delete task
-								  </a>
-								</td>
-								<td>{{ status }}</td>
-								<td>{{ task.title }}</td>
-								<td>{{ task.description }}</td>
-							</tr>
-						{% endfor %}
-					{% endfor %}
-			</table>
-			<a href="{% url 'creat_task' %}">Add New Task</a>
+
+	{% if messages %}
+	    {% for message in messages %}
+	        <div style="
+	            padding:10px;
+	            margin-bottom:10px;
+	            {% if 'success' in message.tags %}
+	                background:#d4edda; color:#155724;
+	            {% elif 'error' in message.tags %}
+	                background:#f8d7da; color:#721c24;
+	            {% endif %}
+	        ">
+	            {{ message }}
+	        </div>
+	    {% endfor %}
+	{% endif %}
+
+	<table border="1">
+		<tr>
+			<th>ویرایش وظیفه</th>
+			<th>حذف وظیفه</th>
+			<th>وضعیت</th>
+			<th>عنوان</th>
+			<th>توضیح</th>
+		</tr>
+			{% for status, tasks in grouped_todos.items %}
+				{% for task in tasks %}
+					<tr>
+						<td>
+						  <a href="{% url 'edit_task' task.id %}"
+						     style="color: blue;">
+						     ویرایش
+						  </a>
+						</td>
+						<td>
+						  <a href="{% url 'delete_task' task.id %}"
+						     onclick="return confirm('آیا مطمِن هستید که این وظیفه را پاک کنید؟');"
+						     style="color: red;">
+						     حذف
+						  </a>
+						</td>
+						<td>{{ status }}</td>
+						<td>{{ task.title }}</td>
+						<td>{{ task.description }}</td>
+					</tr>
+				{% endfor %}
+			{% endfor %}
+	</table>
+	<a href="{% url 'creat_task' %}">اضافه کردن وظیفه جدید</a>
 </body>
 </html>

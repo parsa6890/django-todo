@@ -7,9 +7,9 @@ PRIORITY_MEDIUM = 2
 PRIORITY_HIGH = 3
 
 PRIORITY_CHOICES = [
-	(PRIORITY_LOW, 'Low'),
-	(PRIORITY_MEDIUM, 'Medium'),
-	(PRIORITY_HIGH, 'High'),
+	(PRIORITY_LOW, 'پایین'),
+	(PRIORITY_MEDIUM, 'متوسط'),
+	(PRIORITY_HIGH, 'بالا'),
 ]
 
 STATUS_PENDING = 'pending'
@@ -17,9 +17,9 @@ STATUS_IN_PROGRESS = 'in_progress'
 STATUS_DONE = 'done'
 
 STATUS_CHOICES = [
-	(STATUS_PENDING, 'Pending'),
-	(STATUS_IN_PROGRESS, 'In Progress'),
-	(STATUS_DONE, 'Done'),
+	(STATUS_PENDING, 'در حال بررسی'),
+	(STATUS_IN_PROGRESS, 'در حال انجام'),
+	(STATUS_DONE, 'انجام شده'),
 ]
 
 class TodoList(models.Model):
