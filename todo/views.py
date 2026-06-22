@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
 from .models import TodoList
 from .forms import TodoForm
 from django.contrib import messages
@@ -54,3 +55,23 @@ def edit_task_view(request, id):
 		"form":form
 	}
 	return render(request, 'todo/edit_task.html', context)
+
+
+def login_view(request):
+	if request.method == "POST":
+		username = request.POST.get("username")
+		password = request.POST.get("password")
+
+		user = authenticate(request, username=username, password=password)
+
+		if user is not None:
+			login(request, user)
+			return redirect("todos")
+		else:
+			return render(request, "todo/login.html", {"error": "اطلاعات وارد شده صحیح نمی باشد"})
+	return render(request, "todo/login.html")
+
+
+def logout_view(request):
+	logout(request)
+	return redirect("login")
