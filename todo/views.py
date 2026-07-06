@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from .models import TodoList
 from .forms import TodoForm
 from django.contrib import messages
@@ -75,3 +76,42 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return redirect("login")
+
+
+def register_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if password != confirm_password:
+            return render(
+                request,
+                "todo/register.html",
+                {"error": "رمز عبور و تکرار آن مطابقت ندارند"}
+            )
+
+        if len(password) < 8:
+            return render(
+                request,
+                "todo/register.html",
+                {"error": "رمز عبور باید حداقل ۸ کاراکتر باشد"}
+            )
+
+        # بررسی تکراری بودن Username
+        if User.objects.filter(username=username).exists():
+            return render(
+                request,
+                "todo/register.html",
+                {"error": "این نام کاربری قبلاً ثبت شده است."}
+            )
+
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+        )
+
+        login(request, user)
+        return redirect("todos")
+
+    return render(request, "todo/register.html")
