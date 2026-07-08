@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 
@@ -23,6 +24,7 @@ STATUS_CHOICES = [
 ]
 
 class TodoList(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length = 255)
 	priority = models.IntegerField(choices=PRIORITY_CHOICES,default=PRIORITY_MEDIUM)
 	description = models.TextField(blank = True)

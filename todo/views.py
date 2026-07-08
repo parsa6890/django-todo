@@ -4,11 +4,13 @@ from django.contrib.auth.models import User
 from .models import TodoList
 from .forms import TodoForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 STATUS_CHOICES=['pending', 'in_progress', 'done']
+@login_required
 def todo_view(request):
-	all_list=TodoList.objects.all()
+	all_list=TodoList.objects.filter(owner=request.user)
 	grouped_todos={
 		status: all_list.filter(status=status)
 				for status in STATUS_CHOICES
@@ -18,12 +20,14 @@ def todo_view(request):
 	}
 	return render(request, 'todo/index.html', context)
 
-
+@login_required
 def creat_task_view(request):
 	if request.method=="POST":
 		form=TodoForm(request.POST)
 		if form.is_valid():
-			form.save()
+			task = form.save(commit=False)
+			task.owner = request.user
+			task.save()
 			messages.success(request, "وظیفه جدید با موفقیت ایجاد شد.")
 			return redirect('todos')
 	else:
@@ -35,7 +39,7 @@ def creat_task_view(request):
 
 
 def delete_task_view(request, id):
-	task=get_object_or_404(TodoList, id= id)
+	task=get_object_or_404(TodoList,owner=request.user, id= id)
 	task.delete()
 	messages.success(request, "وظیفه مورد نظر شما با موفقیت حذف شد.")
 	return redirect('todos')
@@ -43,7 +47,7 @@ def delete_task_view(request, id):
 
 
 def edit_task_view(request, id):
-	task=get_object_or_404(TodoList, id= id)
+	task=get_object_or_404(TodoList,owner=request.user, id= id)
 	if request.method=="POST":
 		form=TodoForm(request.POST, instance=task)
 		if form.is_valid():
