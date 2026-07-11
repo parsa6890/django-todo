@@ -5,20 +5,45 @@ from .models import TodoList
 from .forms import TodoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+
+
+# STATUS_CHOICES=['pending', 'in_progress', 'done']
+# @login_required
+# def todo_view(request):
+# 	all_list=TodoList.objects.filter(owner=request.user)
+# 	grouped_todos={
+# 		status: all_list.filter(status=status)
+# 				for status in STATUS_CHOICES
+# 	}
+# 	context={
+# 		'grouped_todos': grouped_todos
+# 	}
+# 	return render(request, 'todo/index.html', context)
 
 
 STATUS_CHOICES=['pending', 'in_progress', 'done']
-@login_required
-def todo_view(request):
-	all_list=TodoList.objects.filter(owner=request.user)
-	grouped_todos={
-		status: all_list.filter(status=status)
-				for status in STATUS_CHOICES
-	}
-	context={
-		'grouped_todos': grouped_todos
-	}
-	return render(request, 'todo/index.html', context)
+class TodoListView(LoginRequiredMixin, ListView):
+    model = TodoList
+    template_name = "todo/index.html"
+    context_object_name = "tasks"
+
+    def get_queryset(self):
+        return self.model.objects.filter(owner=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        grouped_todos = {}
+
+        for status in STATUS_CHOICES:
+            grouped_todos[status] = context["tasks"].filter(status=status)
+
+        context["grouped_todos"] = grouped_todos
+
+        return context
+
 
 @login_required
 def creat_task_view(request):
