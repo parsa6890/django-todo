@@ -1,0 +1,31 @@
+
+
+<div class="container mt-4">
+
+    <h2>ویرایش پروفایل</h2>
+
+    <form method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <h4>اطلاعات کاربر</h4>
+
+        {{ form.as_p }}
+
+        <hr>
+
+        <h4>اطلاعات پروفایل</h4>
+
+        {{ profile_form.as_p }}
+
+        <button type="submit">
+            ذخیره تغییرات
+        </button>
+        <a href="{% url 'todos' %}">
+    لیست وظایف
+        </a>
+
+    </form>
+
+</div>
+

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import TodoList, UserProfile
-from .forms import TodoForm
+from .forms import TodoForm, UserForm, UserProfileForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -190,3 +190,37 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         profile = UserProfile.objects.get(user=self.request.user)
         context["profile"]= profile
         return context
+    
+
+class EditProfileView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserForm
+    profile_form_class = UserProfileForm
+    template_name = "todo/edit_profile.html"
+
+    def get_queryset(self):
+        return User.objects.filter(pk=self.request.user.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = UserProfile.objects.get(user=self.request.user)
+        profile_form = kwargs.get("profile_form")
+        if profile_form is None:
+            profile_form = self.profile_form_class(instance=profile)
+        context["profile_form"] = profile_form
+        return context
+
+    def form_valid(self, form):
+        profile_form = self.profile_form_class(
+            self.request.POST,
+            self.request.FILES,
+            instance=self.request.user.userprofile)
+        
+        if not profile_form.is_valid():
+            context = self.get_context_data(form=form,profile_form=profile_form)
+            return self.render_to_response(context)
+        profile_form.save()
+
+        return super().form_valid(form)
+    def get_success_url(self):
+        return reverse_lazy("profile")

@@ -43,6 +43,8 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	profile_image = models.ImageField(upload_to="profile_images/", blank=True)
+	email= models.EmailField(blank=True)
+	organizational_email= models.EmailField(blank=True)
 	mobile = models.CharField(max_length=12, blank=True)
 	internal_number = models.CharField(max_length=5, blank=True)
 	bio = models.TextField(max_length=255, blank=True)

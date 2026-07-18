@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register_view, name='register'),
     path('profile/', views.DashboardView.as_view(), name='profile'),
+    path('edit_profile/<int:pk>', views.EditProfileView.as_view(), name='edit_profile')
 ]
