@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>داشبورد</title>
+</head>
+<body>
+
+```
+<h1>داشبورد</h1>
+
+{% if profile.profile_image %}
+    <img
+        src="{{ profile.profile_image.url }}"
+        alt="تصویر پروفایل"
+        width="150"
+    >
+{% else %}
+    <p>تصویر پروفایل ثبت نشده است.</p>
+{% endif %}
+
+<hr>
+
+<p>
+    <strong>نام کاربری:</strong>
+    {{ profile.user.username }}
+</p>
+
+<p>
+    <strong>نام:</strong>
+    {{ profile.user.first_name }}
+</p>
+
+<p>
+    <strong>نام خانوادگی:</strong>
+    {{ profile.user.last_name }}
+</p>
+
+<p>
+    <strong>شماره موبایل:</strong>
+    {{ profile.mobile }}
+</p>
+
+<p>
+    <strong>شماره داخلی:</strong>
+    {{ profile.internal_number }}
+</p>
+
+<p>
+    <strong>درباره من:</strong>
+    {{ profile.bio }}
+</p>
+```
+<a href="{% url 'todos' %}">
+    لیست وظایف
+</a>
+
+</body>
+</html>

@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import TodoList
+from .models import TodoList, UserProfile
 from .forms import TodoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
 
 
@@ -174,8 +174,19 @@ def register_view(request):
             username=username,
             password=password,
         )
+        UserProfile.objects.create(user=user)
 
         login(request, user)
         return redirect("todos")
 
     return render(request, "todo/register.html")
+
+
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "todo/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = UserProfile.objects.get(user=self.request.user)
+        context["profile"]= profile
+        return context
