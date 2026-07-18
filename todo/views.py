@@ -6,7 +6,7 @@ from .forms import TodoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 
@@ -83,20 +83,31 @@ def delete_task_view(request, id):
 
 
 
-def edit_task_view(request, id):
-	task=get_object_or_404(TodoList,owner=request.user, id= id)
-	if request.method=="POST":
-		form=TodoForm(request.POST, instance=task)
-		if form.is_valid():
-			form.save()
-			messages.success(request, "وظیفه مورد نظر شما با موفقیت ویرایش شد.")	
-			return redirect('todos')
-	else:
-		form=TodoForm(instance=task)
-	context={
-		"form":form
-	}
-	return render(request, 'todo/edit_task.html', context)
+# def edit_task_view(request, id):
+# 	task=get_object_or_404(TodoList,owner=request.user, id= id)
+# 	if request.method=="POST":
+# 		form=TodoForm(request.POST, instance=task)
+# 		if form.is_valid():
+# 			form.save()
+# 			messages.success(request, "وظیفه مورد نظر شما با موفقیت ویرایش شد.")	
+# 			return redirect('todos')
+# 	else:
+# 		form=TodoForm(instance=task)
+# 	context={
+# 		"form":form
+# 	}
+# 	return render(request, 'todo/edit_task.html', context)
+
+class UpdateTaskView(LoginRequiredMixin, UpdateView):
+	model=TodoList
+	form_class=TodoForm
+	template_name="todo/edit_task.html"
+            
+	def get_queryset(self):
+		return TodoList.objects.filter(owner=self.request.user)
+	
+	def get_success_url(self):
+		return reverse_lazy("todos")
 
 
 def login_view(request):
