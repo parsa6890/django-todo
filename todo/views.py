@@ -6,7 +6,7 @@ from .forms import TodoForm, UserForm, UserProfileForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
 from django.urls import reverse_lazy
 
 
@@ -224,3 +224,16 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
     def get_success_url(self):
         return reverse_lazy("profile")
+
+
+class UsersListView(LoginRequiredMixin, ListView):
+     model= User
+     template_name= "todo/users.html"
+
+     def get_queryset(self):
+          return User.objects.exclude(pk=self.request.user.pk)
+     
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = "todo/user_detail.html"

@@ -1,0 +1,41 @@
+
+
+<div class="container mt-4">
+
+<h2>کاربران سازمان</h2>
+
+{% if object_list %}
+
+    <div class="users-list">
+
+        {% for user in object_list %}
+
+            <div class="user-card">
+
+                <h4>
+                    {{ user.username }}
+                </h4>
+
+                    <a href="{% url 'user_detail' user.pk %}">
+                        مشاهده پروفایل
+                    </a>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <p>کاربر دیگری برای نمایش وجود ندارد.</p>
+
+{% endif %}
+
+    <a href="{% url 'todos' %}">
+        لیست وظایف
+    </a>
+
+</div>
+
+

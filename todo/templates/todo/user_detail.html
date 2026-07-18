@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>پروفایل کاربر</title>
+</head>
+
+<body>
+
+    <h2>پروفایل کاربر</h2>
+
+    <div>
+
+        <h3>{{ object.username }}</h3>
+
+        <p>
+            <strong>نام:</strong>
+            {{ object.first_name }}
+        </p>
+
+        <p>
+            <strong>نام خانوادگی:</strong>
+            {{ object.last_name }}
+        </p>
+
+        <p>
+            <strong>ایمیل:</strong>
+            {{ object.userprofile.email }}
+        </p>
+
+        <p>
+            <strong>ایمیل سازمانی:</strong>
+            {{ object.userprofile.organizational_email }}
+        </p>
+
+        <p>
+            <strong>موبایل:</strong>
+            {{ object.userprofile.mobile }}
+        </p>
+
+        <p>
+            <strong>داخلی:</strong>
+            {{ object.userprofile.internal_number }}
+        </p>
+
+        <p>
+            <strong>درباره من:</strong>
+            {{ object.userprofile.bio }}
+        </p>
+
+    </div>
+        <a href="{% url 'users' %}">
+            لیست کاربران
+        </a>
+</body>
+
+</html>
