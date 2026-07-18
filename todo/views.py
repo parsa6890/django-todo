@@ -75,11 +75,23 @@ class CreateTaskView(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
-def delete_task_view(request, id):
-	task=get_object_or_404(TodoList,owner=request.user, id= id)
-	task.delete()
-	messages.success(request, "وظیفه مورد نظر شما با موفقیت حذف شد.")
-	return redirect('todos')
+# def delete_task_view(request, id):
+# 	task=get_object_or_404(TodoList,owner=request.user, id= id)
+# 	task.delete()
+# 	messages.success(request, "وظیفه مورد نظر شما با موفقیت حذف شد.")
+# 	return redirect('todos')
+
+class DeleteTaskView(LoginRequiredMixin, DeleteView):
+    model = TodoList
+    template_name = "todo/todolist_confirm_delete.html"
+
+    def get_queryset(self):
+        return TodoList.objects.filter(
+            owner=self.request.user
+        )
+
+    def get_success_url(self):
+        return reverse_lazy("todos")
 
 
 

@@ -1,0 +1,8 @@
+<h2>آیا مطمئن هستید که می‌خواهید این وظیفه را حذف کنید؟</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">بله، حذف کن</button>
+</form>
+
+<a href="{% url 'todos' %}">انصراف و بازگشت</a>
