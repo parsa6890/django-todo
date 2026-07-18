@@ -6,7 +6,8 @@ from .forms import TodoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
+from django.urls import reverse_lazy
 
 
 # STATUS_CHOICES=['pending', 'in_progress', 'done']
@@ -45,22 +46,33 @@ class TodoListView(LoginRequiredMixin, ListView):
         return context
 
 
-@login_required
-def creat_task_view(request):
-	if request.method=="POST":
-		form=TodoForm(request.POST)
-		if form.is_valid():
-			task = form.save(commit=False)
-			task.owner = request.user
-			task.save()
-			messages.success(request, "وظیفه جدید با موفقیت ایجاد شد.")
-			return redirect('todos')
-	else:
-		form=TodoForm()
-	context={
-		"form":form
-	}
-	return render(request, 'todo/creat_task.html', context)
+# @login_required
+# def creat_task_view(request):
+# 	if request.method=="POST":
+# 		form=TodoForm(request.POST)
+# 		if form.is_valid():
+# 			task = form.save(commit=False)
+# 			task.owner = request.user
+# 			task.save()
+# 			messages.success(request, "وظیفه جدید با موفقیت ایجاد شد.")
+# 			return redirect('todos')
+# 	else:
+# 		form=TodoForm()
+# 	context={
+# 		"form":form
+# 	}
+# 	return render(request, 'todo/creat_task.html', context)
+
+
+class CreateTaskView(LoginRequiredMixin, CreateView):
+	model= TodoList
+	form_class= TodoForm
+	template_name='todo/create_task.html'
+	success_url= reverse_lazy("todos")
+
+	def form_valid(self, form):
+		form.instance.owner=self.request.user
+		return super().form_valid(form)
 
 
 def delete_task_view(request, id):
